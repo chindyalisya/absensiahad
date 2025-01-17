@@ -187,7 +187,7 @@
                                     </div>
                                     <div class="in">
                                         <div>{{ date("d-m-Y",strtotime($d->tgl_presensi)) }}</div>
-                                        <span class="badge  {{ $d->jam_in < "07:00" ?  "bg-success" : "bg-danger" }}">
+                                        <span class="badge  {{ $d->jam_in < "07:30" ?  "bg-success" : "bg-danger" }}">
                                                     {{ $d->jam_in }}
                                         </span>
                                     </div>
@@ -207,7 +207,7 @@
                                             <b>{{ $d->nama_lengkap }}</b><br>
                                             <small class="text-muted">{{ $d->jabatan }}</small>
                                         </div>
-                                        <span class="badge  {{ $d->jam_in < "07:00" ?  "bg-success" : "bg-danger" }}">
+                                        <span class="badge  {{ $d->jam_in < "07:30" ?  "bg-success" : "bg-danger" }}">
                                                     {{ $d->jam_in }}
                                         </span>
                                     </div>
