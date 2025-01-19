@@ -13,7 +13,6 @@
     <!-- * App Header -->
 @endsection
 @section('content')
-@section('content')
 <div class="row" style="margin-top:70px">
     <div class="col"></div>
     @php
