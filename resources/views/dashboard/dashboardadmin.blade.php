@@ -51,9 +51,9 @@
                         </span>
                       </div>
                       <div class="col">
-                        <div class="font-weight-medium">
-                        {{ $rekapizin -> jmlizin != null ? $rekapizin -> jmlizin : 0 }}
-                        </div>
+                      <div class="font-weight-medium">
+                      {{ $rekapizin->jmlizin ?? 0 }}
+                  </div>
                         <div class="text-secondary">
                           Karyawan Izin
                         </div>

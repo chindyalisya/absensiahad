@@ -23,7 +23,7 @@ class DashboardController extends Controller
         ->get();
 
         $rekappresensi = DB::table('presensi')
-        ->selectRaw('COUNT(nik) as jmlhadir, SUM(IF(jam_in > "07:00",1,0)) as jmlterlambat')
+        ->selectRaw('COUNT(nik) as jmlhadir, SUM(IF(jam_in > "07:30",1,0)) as jmlterlambat')
         ->where('nik',$nik)
         ->whereRaw('MONTH(tgl_presensi)="'.$bulanini.'"')
         ->whereRaw('YEAR(tgl_presensi)="'.$tahunini.'"')
@@ -58,8 +58,7 @@ class DashboardController extends Controller
 
         $rekapizin = DB::table('pengajuan_izin')
         ->selectRaw('SUM(IF(status="i",1,0)) as jmlizin, SUM(IF(status="s",1,0)) as jmlsakit')
-        ->where('tgl_izin', $hariini )
-        ->where('status_approved', 1)
+        ->whereDate('tgl_izin', $hariini) 
         ->first();
         return view('dashboard.dashboardadmin' ,compact('rekappresensi', 'rekapizin'));
     }

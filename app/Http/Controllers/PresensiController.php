@@ -32,13 +32,11 @@ class PresensiController extends Controller
         return response()->json(['status' => 'error', 'message' => 'Gambar tidak ditemukan.']);
     }
 
-    // Tentukan nama file dan format
     $formatName = $nik . "-" . $tgl_presensi;
     $image_parts = explode(";base64", $image);
     $image_base64 = base64_decode($image_parts[1]);
     $fileName = $formatName . ".png";
 
-    // Tentukan folder penyimpanan (public/uploads/absensi di dalam storage/app/public)
     $file = 'uploads/absensi/' . $fileName;
 
     // Data untuk disimpan di database
@@ -62,11 +60,8 @@ class PresensiController extends Controller
     if ($simpan) {
         // Simpan gambar ke disk 'public'
         Storage::disk('public')->put($file, $image_base64);
-        
-        // Mengembalikan respon sukses
         return response()->json(['status' => 'success', 'message' => 'Absen berhasil', 'type' => 'in']);
     } else {
-        // Mengembalikan respon error
         return response()->json(['status' => 'error', 'message' => 'Maaf, Gagal Absen. Silakan Hubungi Bidang IT.']);
     }
 }
@@ -87,20 +82,18 @@ class PresensiController extends Controller
     $karyawan = DB::table('karyawan')->where('nik', $nik)->first();
 
     if ($request->hasFile('foto')) {
-        // Ambil ekstensi file
         $foto = $nik . "." . $request->file('foto')->getClientOriginalExtension();
     
-        // Tentukan folder uploads/karyawan/ di dalam storage/app/public
         $folderPath = 'uploads/karyawan/';
     
-        // Menyimpan foto di disk 'public' tanpa menambahkan 'public/' lagi
+        // Menyimpan foto di disk 'public'
         $request->file('foto')->storeAs($folderPath, $foto, 'public');  // Menggunakan disk 'public' tanpa 'public/' di path
     } else {
         // Jika tidak ada foto, gunakan foto lama
         $foto = $karyawan->foto;
     }    
 
-    // Menyiapkan data yang akan diupdate
+    // data yang akan diupdate
     if (empty($request->password)) {
         $data = [
             'nama_lengkap' => $nama_lengkap,
@@ -116,7 +109,7 @@ class PresensiController extends Controller
         ];
     }
 
-    // Melakukan update data ke database
+    // update data ke database
     $update = DB::table('karyawan')->where('nik', $nik)->update($data);
 
     if ($update) {
@@ -256,15 +249,12 @@ public function gethistori(Request $request){
         $tahun = $request->tahun;
         $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni","Juli", "Agustus","September", "Oktober", "November", "Desember"];
         $rekap = DB::table('presensi')
-        ->selectRaw('presensi.nik, karyawan.nama_lengkap,
-        MAX(IF(DAYOFWEEK(tgl_presensi) = 1 AND WEEK(tgl_presensi) = 1, CONCAT(DATE(tgl_presensi), " ", jam_in), NULL)) AS tgl_1,
-        MAX(IF(DAYOFWEEK(tgl_presensi) = 1 AND WEEK(tgl_presensi) = 2, CONCAT(DATE(tgl_presensi), " ", jam_in), NULL)) AS tgl_2,
-        MAX(IF(DAYOFWEEK(tgl_presensi) = 1 AND WEEK(tgl_presensi) = 3, CONCAT(DATE(tgl_presensi), " ", jam_in), NULL)) AS tgl_3,
-        MAX(IF(DAYOFWEEK(tgl_presensi) = 1 AND WEEK(tgl_presensi) = 4, CONCAT(DATE(tgl_presensi), " ", jam_in), NULL)) AS tgl_4')
+        ->select('presensi.nik', 'karyawan.nama_lengkap', 'presensi.tgl_presensi', 'presensi.jam_in')
         ->join('karyawan', 'presensi.nik', '=', 'karyawan.nik')
-        ->whereRaw('MONTH(tgl_presensi)="'.$bulan.'"')
-        ->whereRaw('YEAR(tgl_presensi)="'.$tahun.'"')
-        ->groupByRaw('presensi.nik,nama_lengkap')
+        ->whereRaw('MONTH(tgl_presensi) = ?', [$bulan])
+        ->whereRaw('YEAR(tgl_presensi) = ?', [$tahun]) 
+        ->whereRaw('DAYOFWEEK(tgl_presensi) = 1') 
+        ->orderBy('presensi.tgl_presensi', 'ASC') 
         ->get();
 
     if  (isset($_POST['exportexel'])) {
