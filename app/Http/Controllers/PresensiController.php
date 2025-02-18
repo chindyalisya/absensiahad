@@ -288,7 +288,7 @@ public function gethistori(Request $request){
             $query->where('status_approved', $request->status_approved);
         }
         $query->orderBy('tgl_izin', 'desc');
-        $izinsakit =$query->paginate(10);
+        $izinsakit =$query->paginate(50);
         $izinsakit->appends($request->all());
         return view('presensi.izinsakit', compact('izinsakit'));
     }

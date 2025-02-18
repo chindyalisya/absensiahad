@@ -58,8 +58,7 @@
                         <div class="col-3">
                         <div class="form-group">
                             <select name="status_approved" id="status_approved" class="form-select">
-                                <option value="">Pilih Status</option>
-                                <option value="0" {{ Request('status_approved') === '0' ? 'selected' : ' ' }}>Pending</option>
+                                <option value="">All Data</option>
                                 <option value="1"  {{ Request('status_approved') == 1 ? 'selected' : ' ' }}>Disetujui</option>
                                 <option value="2"  {{ Request('status_approved') == 2 ? 'selected' : ' ' }}>Ditolak</option>
                             </select>
