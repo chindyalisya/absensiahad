@@ -52,7 +52,7 @@ class DashboardController extends Controller
 
         $hariini = date("Y-m-d");
         $rekappresensi = DB::table('presensi')
-        ->selectRaw('COUNT(nik) as jmlhadir, SUM(IF(jam_in > "07:00",1,0)) as jmlterlambat')
+        ->selectRaw('COUNT(nik) as jmlhadir, SUM(IF(jam_in > "07:30",1,0)) as jmlterlambat')
         ->where('tgl_presensi', $hariini )
         ->first();
 
