@@ -10,7 +10,8 @@
 
   <style>
     @page {
-      size: A4;
+      size: A3;
+      margin: 10mm;
     }
 
     #title {
@@ -20,26 +21,27 @@
 
     .tabelpresensi {
       width: 100%;
-      margin-top: 20px;
+      margin-top: 4px;
       border-collapse: collapse;
+      page-break-inside: auto;
     }
 
     .tabelpresensi tr th {
       border: 1px solid #131212;
-      padding: 8px;
+      padding: 3px;
       background: #dbdbdb;
     }
 
     .tabelpresensi tr td {
       border: 1px solid #131212;
-      padding: 5px;
+      padding: 3px;
       font-size: 12px;
     }
 
   </style>
 </head>
 
-<body class="A4 landscape">
+<body class="A3">
   <section class="sheet padding-10mm">
     <table style="width: 100%">
       <tr>

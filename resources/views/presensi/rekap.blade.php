@@ -35,7 +35,7 @@
                                 <div class="row mt-2">
                                     <div class="col-12">
                                         <div class="form group">
-                                        <select name="tahun" id="tahun" class="form-control">
+                                        <select name="tahun" id="tahun" class="form-select">
                                             <option value="">Tahun</option>
                                             @php
                                             $tahunmulai = 2025;
