@@ -74,7 +74,7 @@
                             <th>No</th>
                             <th>Kode Dept</th>
                             <th>Nama Dept</th>
-                            <th>Aksi</th>
+                            <th>Action</th>
                         </tr>
                     </thread>
                     <tbody>
@@ -188,20 +188,20 @@
                                 });
 
                                 $(".edit").click(function() {
-                                    var kode_dept = $(this).attr('kode_dept');
-                                    $.ajax({
-                                    type: 'POST'
-                                    ,   url: '/departemen/edit'
-                                    ,   cache: false
-                                    ,   data: {
-                                        _token: "{{ csrf_token(); }}"
-                                        ,   kode_dept: kode_dept
-                                    }
-                                    ,   success: function(respond) {
-                                        $("#loadeditform").html(respond); 
+                                var kode_dept = $(this).attr('kode_dept');
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/departemen/edit',
+                                    cache: false,
+                                    data: {
+                                    _token: "{{ csrf_token(); }}",
+                                    kode_dept: kode_dept
+                                    },
+                                    success: function(response) {
+                                    $("#loadeditform").html(response);
                                     }
                                 });
-                                    $("#modal-editdepartemen").modal("show");
+                                $("#modal-editdepartemen").modal("show");
                                 });
 
                                 $('.delete-confirm').click(function(e) {
