@@ -10,7 +10,6 @@
                   Monitoring Presensi
                 </h2>
               </div>
-
             </div>
           </div>
         </div>
@@ -42,6 +41,7 @@
                                             <th>Departemen</th>
                                             <th>Jam Absen</th>
                                             <th>Foto</th>
+                                            <th>Lokasi</th>
                                             <td></td>
                                         </tr>
                                     </thead>

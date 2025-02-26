@@ -84,5 +84,6 @@ Route::middleware(['auth:user'])->group(function () {
     Route::get('/presensi/izinsakit', [PresensiController::class, 'izinsakit']);
     Route::post('/presensi/approvedizinsakit', [PresensiController::class, 'approvedizinsakit']);
     Route::get('/presensi/{id}/batalkanizinsakit', [PresensiController::class, 'batalkanizinsakit']);
+    Route::delete('/presensi/{id}/deleteizinsakit', [PresensiController::class, 'deleteizinsakit']);
 
 });

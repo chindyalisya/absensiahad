@@ -318,6 +318,16 @@ public function gethistori(Request $request){
         }
     }
 
+    public function deleteizinsakit($id)
+    {
+        $delete = DB::table('pengajuan_izin')->where('id', $id)->delete();
+        if ($delete) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
+
     public function cekpengajuanizin(Request $request)
     {
         $tgl_izin = $request->tgl_izin;
