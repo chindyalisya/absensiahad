@@ -12,28 +12,54 @@
     .logout:hover {
         color: white;
     }
+    
+     #user-name-container {
+    position: relative;
+    font-size: 1rem;
+    height: 2rem; 
+    width: 100%; 
+    }
+    
+    #user-name, #user-department {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        white-space: nowrap; 
+        transition: opacity 0.5s ease-in-out;
+    }
+    
+    .typing {
+        opacity: 1;
+    }
     </style>
         <div class="section" id="user-section">
-            <a href="/proseslogout" class="logout">
-                <ion-icon name="exit-outline"></ion-icon>
-            </a>
-            <div id="user-detail">
-                <div class="avatar">
-                    @if(!empty(Auth::guard('karyawan')->user()->foto))
-                    @php
-                    $path = Storage::url('uploads/karyawan/'.Auth::guard('karyawan')->user()->foto);
-                    @endphp
-                    <img src="{{ url($path) }}" alt="avatar" class="imaged w65" style="height: 70px">
-                    @else
-                    <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w10 rounded" style="width: 60px; height: 60px;">
-                    @endif
-                </div>
-                <div id="user-info">
-                    <h2 id="user-name">{{  Auth::guard('karyawan')->user()->nama_lengkap }}</h2>
-                    <span id="user-role">{{  Auth::guard('karyawan')->user()->jabatan }}</span>
-                </div>
-            </div>
+    <a href="/proseslogout" class="logout">
+        <ion-icon name="exit-outline"></ion-icon>
+    </a>
+    <div id="user-detail">
+        <div class="avatar">
+            @if(!empty(Auth::guard('karyawan')->user()->foto))
+            @php
+            $path = Storage::url('uploads/karyawan/'.Auth::guard('karyawan')->user()->foto);
+            @endphp
+            <img src="{{ url($path) }}" alt="avatar" class="imaged w65" style="height: 70px">
+            @else
+            <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w10 rounded" style="width: 60px; height: 60px;">
+            @endif
         </div>
+        <div id="user-info">
+        <div id="user-name-container">
+            <h2 id="user-name"></h2>
+            <h2 id="user-department"></h2>
+        </div>
+        <br>
+        <br>
+            <span id="user-role">{{ Auth::guard('karyawan')->user()->jabatan }}</span>
+        </div>
+    </div>
+</div>
 
         <div class="section" id="menu-section">
             <div class="card">
@@ -95,9 +121,9 @@
                                        @php
                                         $path = Storage::url('uploads/absensi/'.$presensihariini->foto_in);
                                        @endphp
-                                       <img src="{{ url($path) }}" alt="" class="imaged w48">
+                                       <img src="{{ url($path) }}" alt="" class="imaged w48" style="height: 45px">
                                        @else
-                                       <icon-icon name="camera"></icon-icon>
+                                       <ion-icon name="camera"></ion-icon>
                                        @endif
                                     </div>
                                     <div class="presencedetail">
@@ -221,4 +247,64 @@
                 </div>
             </div>
         </div>
+        
+        <script>
+        const userNameElement = document.getElementById('user-name');
+        const userDepartmentElement = document.getElementById('user-department');
+        
+        const nameText = '{{ Auth::guard('karyawan')->user()->nama_lengkap }}';
+        const departmentText = '{{ Auth::guard('karyawan')->user()->departemen }}';
+        
+        let typingInterval;
+        let deleteInterval;
+        
+        function typeText(element, text, speed, callback) {
+            let index = 0;
+            element.textContent = '';
+            element.style.opacity = 1;  
+            typingInterval = setInterval(function() {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
+                } else {
+                    clearInterval(typingInterval);
+                    if (callback) callback();
+                }
+            }, speed);
+        }
+        
+        function deleteText(element, speed, callback) {
+            let currentText = element.textContent;
+            let index = currentText.length;
+            deleteInterval = setInterval(function() {
+                if (index > 0) {
+                    element.textContent = currentText.substring(0, index - 1);
+                    index--;
+                } else {
+                    clearInterval(deleteInterval);
+                    if (callback) callback();
+                }
+            }, speed);
+        }
+        
+        function startTyping() {
+            typeText(userNameElement, nameText, 100, function() {
+                setTimeout(function() {
+                    deleteText(userNameElement, 50, function() {
+                        typeText(userDepartmentElement, departmentText, 100, function() {
+                            setTimeout(function() {
+                                deleteText(userDepartmentElement, 50, function() {
+                                    setTimeout(startTyping, 1000);
+                                });
+                            }, 2000); 
+                        });
+                    });
+                }, 2000); 
+            });
+        }
+        
+        window.onload = function() {
+            setTimeout(startTyping, 500);
+        };
+</script>
 @endsection

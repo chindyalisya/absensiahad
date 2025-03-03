@@ -1,6 +1,27 @@
 <!doctype html>
 <html lang="en">
+<style>
+    #text-container {
+    position: relative;
+    height: 2rem; 
+    width: 100%; 
+    overflow: hidden; 
+}
 
+#text1, #text2, #text3, #text4 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    white-space: nowrap; 
+    transition: opacity 0.5s ease-in-out;
+}
+
+.typing {
+    opacity: 1;
+}
+</style>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport"
@@ -34,9 +55,14 @@
                 <img src="{{ asset('assets/img/login/login.png') }}" alt="image" class="form-image">
             </div>
             <div class="section mt-1">
-                <h1>Selamat Datang</h1>
-                <h4>Silahkan Login Terlebih Dahulu</h4>
+            <h1>Selamat Datang</h1>
+            <div id="text-container">
+                <h4 id="text1">Mohon Login Terlebih Dahulu</h4>
+                <h4 id="text2">RS PKU Muhammadiyah Boja</h4>
+                <h4 id="text3">CAKAP</h4>
+                <h4 id="text4">Cerdas, Agamis, Kuat, Amanah, Profesional</h4>
             </div>
+        </div>
             <div class="section mt-1 mb-5">
                 @php
                         $messagewarning = Session::get('warning');
@@ -97,6 +123,82 @@
     <!-- Base Js File -->
     <script src="{{ asset('assets/js/base.js') }}"></script>
 
+    <script>
+const text1Element = document.getElementById('text1');
+const text2Element = document.getElementById('text2');
+const text3Element = document.getElementById('text3');
+const text4Element = document.getElementById('text4');
+
+const text1 = 'Mohon Login Terlebih Dahulu';
+const text2 = 'RS PKU Muhammadiyah Boja';
+const text3 = 'CAKAP';
+const text4 = 'Cerdas, Agamis, Kuat, Amanah, Profesional';
+
+let typingInterval;
+let deleteInterval;
+
+function typeText(element, text, speed, callback) {
+    let index = 0;
+    element.textContent = '';
+    element.style.opacity = 1;  
+    typingInterval = setInterval(function() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+        } else {
+            clearInterval(typingInterval);
+            if (callback) callback();
+        }
+    }, speed);
+}
+
+function deleteText(element, speed, callback) {
+    let currentText = element.textContent;
+    let index = currentText.length;
+    deleteInterval = setInterval(function() {
+        if (index > 0) {
+            element.textContent = currentText.substring(0, index - 1);
+            index--;
+        } else {
+            clearInterval(deleteInterval);
+            if (callback) callback();
+        }
+    }, speed);
+}
+
+function startTyping() {
+    typeText(text1Element, text1, 100, function() {
+        setTimeout(function() {
+            deleteText(text1Element, 50, function() {
+                typeText(text2Element, text2, 100, function() {
+                    setTimeout(function() {
+                        deleteText(text2Element, 50, function() {
+                            typeText(text3Element, text3, 100, function() {
+                                setTimeout(function() {
+                                    deleteText(text3Element, 50, function() {
+                                        typeText(text4Element, text4, 100, function() {
+                                            setTimeout(function() {
+                                                deleteText(text4Element, 50, function() {
+                                        setTimeout(startTyping, 1000);
+                                    });
+                                }, 2000); 
+                            });
+                        });
+                    }, 2000); 
+                });
+            });
+        }, 2000); 
+    });
+});
+}, 2000); 
+});
+}
+
+
+window.onload = function() {
+    setTimeout(startTyping, 500);
+};
+    </script>
 
 </body>
 

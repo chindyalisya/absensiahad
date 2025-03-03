@@ -31,7 +31,7 @@ class AuthController extends Controller
         if (Auth::guard('user') -> attempt ([ 'email' => $request -> email, 'password' => $request -> password])) {
             return  redirect('/panel/dashboardadmin');
         } else {
-           return redirect('/panel')->with(['warning' => 'Email / Password Salah']);
+           return redirect('/panel')->with(['warning' => 'Username / Password Salah']);
         }
     }
 
